@@ -2,14 +2,19 @@ name: Config Workflow
 description: Workflow to reconcile production config.
 inputs:
   jira-url:
+    description: Base URL the Jira instance.
     default: "https://discoverygarden.atlassian.net/"
   jira-user:
+    description: Email of the Jira API user.
     required: true
   jira-token:
+    description: API token of the Jira API user.
     required: true
   github-token:
+    description: GitHub access token
     default: ${{ github.token }}
   slack-webhook:
+    description: Optional Slack webhook URL to receive notifications.
     required: true
 
 runs:
@@ -22,6 +27,7 @@ runs:
         echo "::set-output name=id::$client"
         echo "::set-output name=id_upper::${client^^}"
       shell: bash
+
     - name: Create Pull Request
       id: create_pr
       uses: alexander-cairns/create-pr@fix-action

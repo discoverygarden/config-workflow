@@ -21,6 +21,7 @@ runs:
         client=$(cut -d '-' -f 2 <<< ${{ github.ref_name }})
         echo "::set-output name=id::$client"
         echo "::set-output name=id_upper::${client^^}"
+      shell: bash
     - name: Create Pull Request
       id: create_pr
       uses: alexander-cairns/create-pr@fix-action
@@ -31,6 +32,7 @@ runs:
         base: ${{ steps.client.outputs.id }}
         automerge: true
         token: ${{ inputs.github-token }}
+
     - name: Notify of Unmergeable Config
       if: ${{ failure() }}
       uses: alexander-cairns/create-issue@create-issues

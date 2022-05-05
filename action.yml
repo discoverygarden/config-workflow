@@ -1,0 +1,50 @@
+name: Config Workflow
+description: Workflow to reconcile production config.
+inputs:
+  jira-url:
+    default: "https://discoverygarden.atlassian.net/"
+  jira-user:
+    required: true
+  jira-token:
+    required: true
+  github-token:
+    default: ${{ github.token }}
+  slack-webhook:
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Get Client ID
+      id: client
+      run: |
+        client=$(cut -d '-' -f 2 <<< ${{ github.ref_name }})
+        echo "::set-output name=id::$client"
+        echo "::set-output name=id_upper::${client^^}"
+    - name: Create Pull Request
+      id: create_pr
+      uses: alexander-cairns/create-pr@fix-action
+      with:
+        title: "${{ steps.client.outputs.id_upper }}: Prod reconcile"
+        repo: ${{ github.repository }} 
+        head: prod-${{ steps.client.outputs.id }}
+        base: ${{ steps.client.outputs.id }}
+        automerge: true
+        token: ${{ inputs.github-token }}
+    - name: Notify of Unmergeable Config
+      if: ${{ failure() }}
+      uses: alexander-cairns/create-issue@create-issues
+      with:
+        project: ${{ steps.client.outputs.id_upper }}
+        summary: Config Pull Request Failed
+        description: |
+          A merge conflict was found in the pull request for ${{ steps.create_pr.outputs.url }}
+        transition: "To Do"
+        deployment-instructions: Deploy reconciled config.
+        pull-url: ${{ steps.create_pr.outputs.url }}
+        jira-url: ${{ inputs.jira-url }}
+        jira-user: ${{ inputs.jira-user }}
+        jira-token: ${{ inputs.jira-token }}
+        slack-webhook: ${{ inputs.slack-webhook }}
+
+

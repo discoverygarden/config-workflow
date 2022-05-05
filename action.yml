@@ -26,7 +26,7 @@ runs:
       id: create_pr
       uses: alexander-cairns/create-pr@fix-action
       with:
-        title: "${{ steps.client.outputs.id_upper }}: Prod reconcile"
+        title: Prod reconcile
         repo: ${{ github.repository }} 
         head: prod-${{ steps.client.outputs.id }}
         base: ${{ steps.client.outputs.id }}

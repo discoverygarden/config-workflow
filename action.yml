@@ -1,6 +1,17 @@
 name: Config Workflow
 description: Workflow to reconcile production config.
 inputs:
+  client-id:
+    description: The Jira project id for the client(Use uppercase).
+  repo:
+    description: Repository name with owner. (owner/repo)
+    default: ${{ github.repository }}
+  head:
+    description: Head branch to merge.
+    default: ${{ github.ref }}
+  base:
+    description: Base branch to merge into.
+    default: ${{ github.event.repository.default_branch }}
   jira-url:
     description: Base URL the Jira instance.
     default: "https://discoverygarden.atlassian.net/"
@@ -20,22 +31,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Get Client ID
-      id: client
-      run: |
-        client=$(cut -d '-' -f 2 <<< ${{ github.ref_name }})
-        echo "::set-output name=id::$client"
-        echo "::set-output name=id_upper::${client^^}"
-      shell: bash
-
     - name: Create Pull Request
       id: create_pr
       uses: alexander-cairns/create-pr@fix-action
       with:
         title: Prod reconcile
-        repo: ${{ github.repository }} 
-        head: prod-${{ steps.client.outputs.id }}
-        base: ${{ steps.client.outputs.id }}
+        repo: ${{ inputs.repo }}
+        head: ${{ inputs.head }}
+        base: ${{ inputs.base }}
         automerge: true
         token: ${{ inputs.github-token }}
 

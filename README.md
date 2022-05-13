@@ -6,6 +6,10 @@ Workflow for reconciling client configs from production.
 
 ### Inputs
 
+- `client-id`: The Jira project id for the client(Use uppercase).
+- `repo`: Repository name with owner. Defaults to current.
+- `head`: Head branch to merge. Deafults to current branch.
+- `base`: Base branch to merge into. Defaults to the current repo's default branch.
 - `jira-url`: Base URL the Jira instance. 
 - `jira-user`: Email of the Jira API user.
 - `jira-token`: API token of the Jira API user.
@@ -26,6 +30,7 @@ jobs:
     steps:
       - uses: discoverygarden/config-workflow@main
         with:
+          client-id: DGI
           jira-url: "https://myjira.atlassian.net"
           jira-user: "user@example.com"
           jira-token: ${{ secrets.JIRA_API_TOKEN }}

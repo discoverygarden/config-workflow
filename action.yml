@@ -50,7 +50,7 @@ runs:
       if: ${{ failure() }}
       uses: alexander-cairns/create-issue@create-issues
       with:
-        project: ${{ steps.client.outputs.id_upper }}
+        project: ${{ inputs.client-id }}
         summary: Config Pull Request Failed
         description: |
           A merge conflict was found in the pull request for ${{ steps.create_pr.outputs.url }}

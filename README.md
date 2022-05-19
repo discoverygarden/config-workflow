@@ -10,6 +10,7 @@ Workflow for reconciling client configs from production.
 - `repo`: Repository name with owner. Defaults to current.
 - `head`: Head branch to merge. Deafults to current branch.
 - `base`: Base branch to merge into. Defaults to the current repo's default branch.
+- `labels`: A comma seperated list of labels to add to the pull request.
 - `jira-url`: Base URL the Jira instance. 
 - `jira-user`: Email of the Jira API user.
 - `jira-token`: API token of the Jira API user.

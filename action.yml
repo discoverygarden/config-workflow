@@ -12,6 +12,9 @@ inputs:
   base:
     description: Base branch to merge into.
     default: ${{ github.event.repository.default_branch }}
+  labels:
+    description: A comma seperated list of labels to add to the pull request.
+    default: "prod auto pr"
   jira-url:
     description: Base URL the Jira instance.
     default: "https://discoverygarden.atlassian.net/"
@@ -39,6 +42,7 @@ runs:
         repo: ${{ inputs.repo }}
         head: ${{ inputs.head }}
         base: ${{ inputs.base }}
+        labels: ${{ inputs.labels }}
         automerge: true
         token: ${{ inputs.github-token }}
 

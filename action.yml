@@ -36,7 +36,7 @@ runs:
   steps:
     - name: Create Pull Request
       id: create_pr
-      uses: alexander-cairns/create-pr@fix-action
+      uses: discoverygarden/create-pr@v1
       with:
         title: Prod reconcile
         repo: ${{ inputs.repo }}
@@ -48,7 +48,7 @@ runs:
 
     - name: Notify of Unmergeable Config
       if: ${{ failure() }}
-      uses: alexander-cairns/create-issue@create-issues
+      uses: discoverygarden/create-issue@v1
       with:
         project: ${{ inputs.client-id }}
         summary: Config Pull Request Failed

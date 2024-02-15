@@ -14,7 +14,7 @@ inputs:
     default: ${{ github.event.repository.default_branch }}
   labels:
     description: A comma seperated list of labels to add to the pull request.
-    default: "prod auto pr"
+    default: "prod auto pr,patch"
   jira-url:
     description: Base URL the Jira instance.
     default: "https://discoverygarden.atlassian.net/"
